@@ -2,7 +2,7 @@ server/node_modules
 
 # OSX
 #
-.DS_Store
+mobile/.DS_Store
 
 # Xcode
 #
