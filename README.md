@@ -1,4 +1,4 @@
-Hydroponics project
+# Hydroponics project
 
 Values being recorded:
 - water level:
