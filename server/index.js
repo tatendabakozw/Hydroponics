@@ -21,7 +21,7 @@ app.use("/", require("./routes/light"));
 
 app.get("/", (req, res) => {
   res.send({
-    message: "Api for cut hub project 1",
+    message: "Hydoponics sever working",
   });
 });
 
