@@ -3,12 +3,13 @@ const router = express.Router();
 
 router.post("/values", async (req, res) => {
   try {
-    const { temp_val, humidity_val, distance_val, light_val } = req.body;
+    const { temp_val, humidity_val, distance_val, light_val, ph_value } = req.body;
     const values = {
       temp: temp_val,
       humidity: humidity_val,
       distance: distance_val,
       light: light_val,
+      ph_value: ph_value
     };
     console.log(req.body);
 
