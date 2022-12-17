@@ -26,4 +26,16 @@ router.post("/values", async (req, res) => {
   }
 });
 
+router.get('/ip', async (req, res, next)=>{
+  try {
+    const { ip_address } = req.body;
+    return res.status(200).send({
+      message: "Ip Received",
+      values: ip_address,
+    });
+  } catch (error) {
+    next(error)
+  }
+})
+
 module.exports = router;
