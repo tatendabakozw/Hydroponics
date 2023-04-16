@@ -29,7 +29,7 @@ const Humidity = (props: Props) => {
         Humidity
       </Text>
       <Text style={tw`text-gray-400 text-sm`}>
-        You can control temperature from here
+        You can control humidity from here
       </Text>
       <View
         style={tw`flex flex-col w-full p-4 rounded-xl border border-gray-100 w-full my-8`}
@@ -106,6 +106,9 @@ const Humidity = (props: Props) => {
           </View>
         </View>
       </View>
+      <TouchableOpacity activeOpacity={0.7} style={tw`bg-red-600 p-4 rounded-lg`}>
+          <Text style={tw`text-center text-lg font-semibold text-white`}>RESET</Text>
+        </TouchableOpacity>
     </View>
   </GeneralLayout>
   )

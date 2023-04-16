@@ -3,14 +3,21 @@ const router = express.Router();
 
 router.post("/values", async (req, res) => {
   try {
-    const { temp_val, humidity_val, distance_val, light_val, ph_value, ip_address } = req.body;
+    const {
+      temp_val,
+      humidity_val,
+      distance_val,
+      light_val,
+      ph_value,
+      ip_address,
+    } = req.body;
     const values = {
       temp: temp_val,
       humidity: humidity_val,
       distance: distance_val,
       light: light_val,
       ph_value: ph_value,
-      ip_address: ip_address
+      ip_address: ip_address,
     };
     console.log(req.body);
 
@@ -26,7 +33,7 @@ router.post("/values", async (req, res) => {
   }
 });
 
-router.get('/ip', async (req, res, next)=>{
+router.get("/ip", async (req, res, next) => {
   try {
     const { ip_address } = req.body;
     return res.status(200).send({
@@ -34,8 +41,8 @@ router.get('/ip', async (req, res, next)=>{
       values: ip_address,
     });
   } catch (error) {
-    next(error)
+    next(error);
   }
-})
+});
 
 module.exports = router;

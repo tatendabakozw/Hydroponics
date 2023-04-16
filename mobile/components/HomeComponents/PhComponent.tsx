@@ -12,22 +12,20 @@ const PhComponent = (props: Props) => {
     <TouchableOpacity
       // @ts-ignore
       onPress={() => navigation.navigate("ph")}
-      style={tw`flex flex-col flex-1`}
+      style={tw`flex flex-col flex-1 bg-gray-100 rounded-lg p-2`}
     >
-      <View style={tw`flex flex-col flex-1 bg-gray-100 rounded-lg p-2`}>
-        <View style={tw`flex flex-row`}>
-          <View style={tw`flex flex-row bg-green-700 p-2 rounded-full`}>
-            <Feather name="wind" size={24} color="white" />
-          </View>
+      <View style={tw`flex flex-row`}>
+        <View style={tw`flex flex-row bg-green-700 p-2 rounded-full`}>
+          <Feather name="wind" size={24} color="white" />
         </View>
-        <Text style={tw`text-xl text-gray-500 py-4`}>pH</Text>
-        <Text style={tw`text-3xl font-semibold text-gray-800 pb-2 text-center`}>
-          {" "}
-          6
-        </Text>
-        <View style={tw`border-t border-gray-300 flex-1 pb-2`} />
-        <Text style={tw`text-center text-lg text-red-700`}>Info</Text>
       </View>
+      <Text style={tw`text-xl text-gray-500 py-4`}>pH</Text>
+      <Text style={tw`text-3xl font-semibold text-gray-800 pb-2 text-center`}>
+        {" "}
+        6
+      </Text>
+      <View style={tw`border-t border-gray-300 flex-1 pb-2`} />
+      <Text style={tw`text-center text-lg text-red-700`}>Info</Text>
     </TouchableOpacity>
   );
 };

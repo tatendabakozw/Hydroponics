@@ -10,15 +10,12 @@ type Props = {
 
 const GeneralLayout = ({ children }: Props) => {
   return (
-    <SafeAreaView style={[tw`bg-white`,{ flex: 1 }]}>
+    <SafeAreaView style={{ flex: 1 }}>
       <View>
         <CustomHeader />
       </View>
       <ScrollView
-        style={[
-          tw`min-h-full flex-1`,
-          { paddingHorizontal: 5, backgroundColor: "#fff" },
-        ]}
+        style={[tw`flex-1 bg-white h-full`, { paddingHorizontal: 10 }]}
       >
         {children}
       </ScrollView>

@@ -5,6 +5,28 @@ import tw from "twrnc";
 type Props = {};
 
 const CurrentWeather = (props: Props) => {
+  const date = new Date();
+  let day = date.getDate();
+  let year = date.getFullYear();
+
+  const monthNames = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+
+  const month_words = monthNames[date.getMonth()];
+
+  
   return (
     <View style={tw`relative flex flex-col bg-gray-50 p-2 w-full rounded-lg`}>
       <View
@@ -18,7 +40,9 @@ const CurrentWeather = (props: Props) => {
       </View>
       <View style={tw`mt-5 flex flex-row items-center`}>
         <View style={tw`flex flex-col`}>
-          <Text style={tw`text-gray-400 text-sm pt-2`}>Today, 12 Dec 2022</Text>
+          <Text style={tw`text-gray-400 text-sm pt-2`}>
+            Today, {day} {month_words} {year}
+          </Text>
           <View style={tw`flex flex-row items-end py-4`}>
             <Text style={tw`text-green-700 text-5xl font-semibold`}>
               {" "}

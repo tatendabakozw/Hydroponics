@@ -9,7 +9,8 @@ import PhComponent from "../../components/HomeComponents/PhComponent";
 import DepthComponent from "../../components/HomeComponents/DepthComponent";
 import LightComponent from "../../components/HomeComponents/LightComponent";
 import socketIOClient from "socket.io-client";
-const ENDPOINT = "http://192.168.198.150:5557/";
+import CurrentWeather from "../../components/Currentweather/CurrentWeather";
+const ENDPOINT = "https://hydroponics-server.onrender.com/";
 
 const socket = socketIOClient(ENDPOINT, {
   transports: ["websocket", "polling", "flashsocket"],
@@ -29,14 +30,12 @@ const Home = (props: Props) => {
     });
   }, [socket]);
 
-  console.log("all info data", all_info);
-
   return (
     <GeneralLayout>
-      <View style={{ flex: 1 }}>
-        <ScrollView contentContainerStyle={{ flexGrow: 1, flex: 1 }}>
+      <View style={tw`h-full`}>
+        <ScrollView contentContainerStyle={tw``} >
           <StatusBar style="auto" />
-          <View style={tw`flex flex-col w-full bg-white pb-4 flex-1 h-full`}>
+          <View style={tw`flex flex-col w-full bg-white pb-4`}>
             <View
               style={tw`flex flex-row items-center p-1 bg-gray-100 rounded`}
             >
@@ -55,12 +54,12 @@ const Home = (props: Props) => {
             </View>
           </View>
           {/* weather info item on top of page */}
-          {/* <>
-          <CurrentWeather />
-        </>
-        <Text style={tw`text-2xl text-center text-gray-700 py-8`}>
-          Properties
-        </Text> */}
+          <>
+            <CurrentWeather />
+          </>
+          <Text style={tw`text-2xl text-center text-gray-700 py-8`}>
+            Properties
+          </Text>
           {/* item for weather info */}
           <View style={tw`flex flex-col justify-between `}>
             <>
@@ -68,27 +67,26 @@ const Home = (props: Props) => {
             </>
 
             <View style={tw`flex flex-row`}>
-              {/* item fot humidity info */}
               <>
                 <HumidityComponent value={all_info?.values?.humidity} />
               </>
 
-              {/* item for winf info */}
               <>
                 <PhComponent />
               </>
             </View>
             <View style={tw`flex flex-row pt-2`}>
-              {/* item fot humidity info */}
               <>
                 <DepthComponent value={all_info?.values?.distance} />
               </>
 
-              {/* item for winf info */}
               <>
                 <LightComponent value={all_info?.values?.light} />
               </>
             </View>
+            {/* <View style={tw`h-50 bg-red-500 rounded`}>
+
+            </View> */}
           </View>
         </ScrollView>
       </View>

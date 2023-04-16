@@ -1,26 +1,66 @@
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import {
+  ActivityIndicator,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import React, { useContext, useState } from "react";
 import GeneralLayout from "../../layouts/GeneralLayout";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import tw from "twrnc";
 import { data } from "../../utils/data";
 import { Store } from "../../context/Store";
+import { useCurrentDate } from "../../hooks/useCurrentDate";
+import axios from "axios";
+import { arduinoUrl } from "../../utils/apiUrl";
 
 type Props = {};
 
 const Temperature = (props: Props) => {
   const [current_temp, setCurrentTemp] = useState(data.OPTIMAL_TEMP);
+  const [loading, setLoading] = useState(false);
+
+  // This arrangement can be altered based on how we want the date's format to appear.
+  let currentDate = useCurrentDate();
 
   const { dispatch } = useContext(Store);
 
-  const increase_temp = () => {
+  const increase_temp = async () => {
     setCurrentTemp((current_temp) => current_temp + 1);
     dispatch({ type: "CHANGE_TEMP", payload: current_temp + 1 });
+    try {
+      setLoading(true);
+      const { data } = await axios.get(`${arduinoUrl}/fan_on`);
+      console.log(data);
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+    }
   };
 
-  const decrease_temp = () => {
+  const decrease_temp = async () => {
     setCurrentTemp((current_temp) => current_temp - 1);
     dispatch({ type: "CHANGE_TEMP", payload: current_temp - 1 });
+    try {
+      setLoading(true);
+      const { data } = await axios.get(`${arduinoUrl}/fan_off`);
+      console.log(data);
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+    }
+  };
+
+  const auto_regulate = async () => {
+    try {
+      setLoading(true);
+      const { data } = await axios.get(`${arduinoUrl}/auto_regulate_fan`);
+      console.log(data);
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+    }
   };
 
   return (
@@ -40,7 +80,7 @@ const Temperature = (props: Props) => {
               <Text style={tw`text-3xl font-semibold text-gray-800`}>
                 {current_temp}&#8451;
               </Text>
-              <Text style={tw`text-gray-400 text-sm`}>19 November 2022</Text>
+              <Text style={tw`text-gray-400 text-sm`}>{currentDate}</Text>
             </View>
             {current_temp > data.OPTIMAL_TEMP + data.ERROR_MARGIN ? (
               <Text style={tw`text-lg font-semibold text-red-700`}>
@@ -78,12 +118,16 @@ const Temperature = (props: Props) => {
                     size={24}
                     color="white"
                   />
-                  <View style={tw`flex flex-col ml-2`}>
-                    <Text style={tw`text-white`}>Dec Temp</Text>
-                    <Text style={tw`text-white text-lg font-bold`}>
-                      {current_temp - 1}&#8451;
-                    </Text>
-                  </View>
+                  {loading ? (
+                    <ActivityIndicator style={tw`text-white ml-2`} />
+                  ) : (
+                    <View style={tw`flex flex-col ml-2`}>
+                      <Text style={tw`text-white`}>Dec Temp</Text>
+                      <Text style={tw`text-white text-lg font-bold`}>
+                        {current_temp - 1}&#8451;
+                      </Text>
+                    </View>
+                  )}
                 </TouchableOpacity>
                 <TouchableOpacity
                   onPress={increase_temp}
@@ -94,17 +138,32 @@ const Temperature = (props: Props) => {
                     size={24}
                     color="white"
                   />
-                  <View style={tw`flex flex-col ml-2`}>
-                    <Text style={tw`text-white`}>Inc Temp</Text>
-                    <Text style={tw`text-white text-lg font-bold`}>
-                      {current_temp + 1}&#8451;
-                    </Text>
-                  </View>
+                  {loading ? (
+                    <ActivityIndicator style={tw`text-white ml-2`} />
+                  ) : (
+                    <View style={tw`flex flex-col ml-2`}>
+                      <Text style={tw`text-white`}>Inc Temp</Text>
+                      <Text style={tw`text-white text-lg font-bold`}>
+                        {current_temp + 1}&#8451;
+                      </Text>
+                    </View>
+                  )}
                 </TouchableOpacity>
               </View>
             </View>
           </View>
         </View>
+        <TouchableOpacity
+          onPress={loading ? () => console.log("loading...") : auto_regulate}
+          activeOpacity={0.7}
+          style={tw`bg-red-600 p-4 rounded-lg`}
+        >
+          <Text
+            style={tw`text-center text-lg font-semibold text-white uppercase`}
+          >
+            {loading ? "loading..." : 'auto regulate'}
+          </Text>
+        </TouchableOpacity>
       </View>
     </GeneralLayout>
   );
