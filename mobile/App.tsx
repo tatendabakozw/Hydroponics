@@ -7,6 +7,7 @@ import Humidity from "./screens/PropertyScreens/Humidity";
 import PH from "./screens/PropertyScreens/PH";
 import WaterLevel from "./screens/PropertyScreens/WaterLevel";
 import LightIntensity from "./screens/PropertyScreens/LightIntensity";
+import Setup from "./screens/setup/Setup";
 
 const Stack = createNativeStackNavigator();
 
@@ -44,6 +45,11 @@ export default function App() {
           <Stack.Screen
             name="light"
             component={LightIntensity}
+            options={{ headerShown: false }}
+          />
+           <Stack.Screen
+            name="setup"
+            component={Setup}
             options={{ headerShown: false }}
           />
         

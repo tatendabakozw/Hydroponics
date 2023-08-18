@@ -17,7 +17,7 @@ import { arduinoUrl } from "../../utils/apiUrl";
 
 type Props = {};
 
-const Temperature = (props: Props) => {
+const LightIntensity = (props: Props) => {
   const [current_temp, setCurrentTemp] = useState(data.OPTIMAL_TEMP);
   const [loading, setLoading] = useState(false);
 
@@ -26,12 +26,12 @@ const Temperature = (props: Props) => {
 
   const { dispatch } = useContext(Store);
 
-  const increase_temp = async () => {
+  const turn_onLight = async () => {
+    setLoading(true);
     setCurrentTemp((current_temp) => current_temp + 1);
     dispatch({ type: "CHANGE_TEMP", payload: current_temp + 1 });
     try {
-      setLoading(true);
-      const { data } = await axios.get(`${arduinoUrl}/fan_on`);
+      const { data } = await axios.get(`${arduinoUrl}/light_on`);
       console.log(data);
       setLoading(false);
     } catch (error) {
@@ -39,12 +39,12 @@ const Temperature = (props: Props) => {
     }
   };
 
-  const decrease_temp = async () => {
+  const turn_off_light = async () => {
+    setLoading(true);
     setCurrentTemp((current_temp) => current_temp - 1);
     dispatch({ type: "CHANGE_TEMP", payload: current_temp - 1 });
     try {
-      setLoading(true);
-      const { data } = await axios.get(`${arduinoUrl}/fan_off`);
+      const { data } = await axios.get(`${arduinoUrl}/light_off`);
       console.log(data);
       setLoading(false);
     } catch (error) {
@@ -52,25 +52,25 @@ const Temperature = (props: Props) => {
     }
   };
 
-  const auto_regulate = async () => {
+  const auto_regulate = async() =>{
     try {
       setLoading(true);
-      const { data } = await axios.get(`${arduinoUrl}/auto_regulate_fan`);
+      const { data } = await axios.get(`${arduinoUrl}/auto_regulate_light`);
       console.log(data);
       setLoading(false);
     } catch (error) {
       setLoading(false);
     }
-  };
+  }
 
   return (
     <GeneralLayout>
       <View style={tw`flex flex-col px-2`}>
         <Text style={tw`text-2xl font-semibold text-gray-700`}>
-          Temperature
+          Light Intensity
         </Text>
         <Text style={tw`text-gray-400 text-sm`}>
-          You can control temperature from here
+          You can control light value from here
         </Text>
         <View
           style={tw`flex flex-col w-full p-4 rounded-xl border border-gray-100 w-full my-8`}
@@ -78,7 +78,7 @@ const Temperature = (props: Props) => {
           <View style={tw`flex flex-row w-full justify-between pb-4`}>
             <View style={tw`flex flex-col`}>
               <Text style={tw`text-3xl font-semibold text-gray-800`}>
-                {current_temp}&#8451;
+                {current_temp}%
               </Text>
               <Text style={tw`text-gray-400 text-sm`}>{currentDate}</Text>
             </View>
@@ -110,7 +110,9 @@ const Temperature = (props: Props) => {
             <View>
               <View style={tw`flex flex-row items-center justify-between`}>
                 <TouchableOpacity
-                  onPress={decrease_temp}
+                  onPress={
+                    loading ? () => console.log("loading") : turn_off_light
+                  }
                   style={tw`flex flex-row items-center `}
                 >
                   <MaterialCommunityIcons
@@ -122,7 +124,7 @@ const Temperature = (props: Props) => {
                     <ActivityIndicator style={tw`text-white ml-2`} />
                   ) : (
                     <View style={tw`flex flex-col ml-2`}>
-                      <Text style={tw`text-white`}>Fan On</Text>
+                      <Text style={tw`text-white`}>Light Off</Text>
                       {/* <Text style={tw`text-white text-lg font-bold`}>
                         {current_temp - 1}&#8451;
                       </Text> */}
@@ -130,7 +132,9 @@ const Temperature = (props: Props) => {
                   )}
                 </TouchableOpacity>
                 <TouchableOpacity
-                  onPress={increase_temp}
+                  onPress={
+                    loading ? () => console.log("loading") : turn_onLight
+                  }
                   style={tw`flex flex-row items-center `}
                 >
                   <MaterialCommunityIcons
@@ -142,7 +146,7 @@ const Temperature = (props: Props) => {
                     <ActivityIndicator style={tw`text-white ml-2`} />
                   ) : (
                     <View style={tw`flex flex-col ml-2`}>
-                      <Text style={tw`text-white`}>Fan Off</Text>
+                      <Text style={tw`text-white`}>Light On</Text>
                       {/* <Text style={tw`text-white text-lg font-bold`}>
                         {current_temp + 1}&#8451;
                       </Text> */}
@@ -169,6 +173,6 @@ const Temperature = (props: Props) => {
   );
 };
 
-export default Temperature;
+export default LightIntensity;
 
 const styles = StyleSheet.create({});

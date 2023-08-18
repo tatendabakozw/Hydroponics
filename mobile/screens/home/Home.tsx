@@ -1,4 +1,10 @@
-import { ScrollView, StyleSheet, Text, View } from "react-native";
+import {
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import React, { useEffect, useState } from "react";
 import { StatusBar } from "expo-status-bar";
 import tw from "twrnc";
@@ -10,6 +16,8 @@ import DepthComponent from "../../components/HomeComponents/DepthComponent";
 import LightComponent from "../../components/HomeComponents/LightComponent";
 import socketIOClient from "socket.io-client";
 import CurrentWeather from "../../components/Currentweather/CurrentWeather";
+import { useNavigation } from "@react-navigation/native";
+import HomeHeader from "../../components/Navigation/HomeHeader";
 const ENDPOINT = "https://hydroponics-server.onrender.com/";
 
 const socket = socketIOClient(ENDPOINT, {
@@ -22,6 +30,7 @@ type Props = {};
 
 const Home = (props: Props) => {
   const [all_info, setAllInfo] = useState<any>();
+  const navigation = useNavigation();
 
   useEffect(() => {
     socket.on("values_updates", (data) => {
@@ -33,26 +42,9 @@ const Home = (props: Props) => {
   return (
     <GeneralLayout>
       <View style={tw`h-full`}>
-        <ScrollView contentContainerStyle={tw``} >
+        <ScrollView contentContainerStyle={tw``}>
           <StatusBar style="auto" />
-          <View style={tw`flex flex-col w-full bg-white pb-4`}>
-            <View
-              style={tw`flex flex-row items-center p-1 bg-gray-100 rounded`}
-            >
-              <View style={tw`bg-green-700 px-2 py-3 rounded flex-1`}>
-                <Text style={tw`text-white text-xl font-semibold text-center`}>
-                  Overview
-                </Text>
-              </View>
-              <View style={tw`px-2 rounded flex-1`}>
-                <Text
-                  style={tw`text-gray-500 text-center text-xl font-semibold`}
-                >
-                  Notes
-                </Text>
-              </View>
-            </View>
-          </View>
+          <HomeHeader />
           {/* weather info item on top of page */}
           <>
             <CurrentWeather />
